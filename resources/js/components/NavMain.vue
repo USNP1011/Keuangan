@@ -4,7 +4,7 @@ import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 
 defineProps<{
-    items: NavItem[];
+    items: NavItem[]; // Update NavItem type to include children
 }>();
 
 const page = usePage<SharedData>();
@@ -15,15 +15,23 @@ const page = usePage<SharedData>();
         <SidebarGroupLabel>Platform</SidebarGroupLabel>
         <SidebarMenu>
             <SidebarMenuItem v-for="item in items" :key="item.title">
-                <SidebarMenuButton 
-                    as-child :is-active="item.href === page.url"
-                    :tooltip="item.title"
-                >
+                <SidebarMenuButton as-child :is-active="item.href === page.url" :tooltip="item.title">
                     <Link :href="item.href">
-                        <component :is="item.icon" />
-                        <span>{{ item.title }}</span>
+                    <component :is="item.icon" />
+                    <span>{{ item.title }}</span>
                     </Link>
                 </SidebarMenuButton>
+                <SidebarMenu v-if="item.childs">
+                    <SidebarMenuItem v-for="child in item.childs" :key="child.title">
+                        <SidebarMenuButton as-child :is-active="child.href === page.url" :tooltip="child.title">
+                            <Link :href="child.href">
+                            <component :is="child.icon" />
+                            <span>{{ child.title }}</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+               
             </SidebarMenuItem>
         </SidebarMenu>
     </SidebarGroup>

@@ -7,6 +7,13 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
+
+Route::get('mahasiswa', function () {
+    return Inertia::render('mahasiswa/MahasiswaView');
+})->name('mahasiswa');
+
+
+
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
